@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 
-const postSchema = mongoose.Schema({
+const postSchema = mongoose.Schema(
+
+	{
 	title: {type: String, required: true},
 	content:{type: String, required:true},
 	author: {
-		firstName: {type: String, required: true},
-		lastName: {type:String, required: true}
+		firstName: {type: String, required: false},
+		lastName: {type:String, required: false}
 	}
 })
 
 postSchema.virtual('authorName').get(function(){
-	return `${this.firstName} ${this.lastName}`.trim()
+	return `${this.author.firstName} ${this.author.lastName}`.trim()
 });
 
 postSchema.methods.serialize = function(){
@@ -22,6 +24,6 @@ postSchema.methods.serialize = function(){
 	}
 }
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model('Post', postSchema, 'blogPosts');
 
-module.exports = {Posts};
+module.exports = {Post};
